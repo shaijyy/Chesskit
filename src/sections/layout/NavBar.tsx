@@ -76,11 +76,11 @@ export default function NavBar({ darkMode, switchDarkMode }: Props) {
                 fontSize: { xs: "1rem", sm: "1.25rem" },
               }}
             >
-              Chesskit
+              Shaijyy's Chesskit
             </Typography>
           </NavLink>
 
-          <StyledIconButtonLink
+          {/* <StyledIconButtonLink
             href="https://discord.gg/Yr99abAcUr"
             target="_blank"
             rel="noopener noreferrer"
@@ -88,10 +88,10 @@ export default function NavBar({ darkMode, switchDarkMode }: Props) {
             <IconButton color="inherit" component="span">
               <Icon icon="ri:discord-fill" />
             </IconButton>
-          </StyledIconButtonLink>
+          </StyledIconButtonLink> */}
 
           <StyledIconButtonLink
-            href="https://github.com/GuillaumeSD/Chesskit"
+            href="https://github.com/shaijyy/Chesskit"
             target="_blank"
             rel="noopener noreferrer"
             sx={{ ml: "min(0.6rem, 0.8vw)" }}
