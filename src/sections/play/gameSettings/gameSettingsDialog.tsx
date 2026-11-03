@@ -28,7 +28,6 @@ import {
   enginePlayNameAtom,
 } from "../states";
 import { useChessActions } from "@/hooks/useChessActions";
-import { logAnalyticsEvent } from "@/lib/firebase";
 import { useEffect, useState } from "react";
 import { isEngineSupported } from "@/lib/engine/shared";
 import { Stockfish16_1 } from "@/lib/engine/stockfish16_1";
@@ -93,12 +92,6 @@ export default function GameSettingsDialog({ open, onClose }: Props) {
 
     setIsGameInProgress(true);
     handleClose();
-
-    logAnalyticsEvent("play_game", {
-      engine: engineName,
-      engineElo,
-      playerColor,
-    });
   };
 
   useEffect(() => {

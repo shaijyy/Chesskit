@@ -14,6 +14,7 @@ import { Chess } from "chess.js";
 import { useRouter } from "next/router";
 import { GameEval } from "@/types/eval";
 import { fetchLichessGame } from "@/lib/lichess";
+import { decodeBase64Url } from "@/lib/helpers";
 
 export default function LoadGame() {
   const router = useRouter();
@@ -41,7 +42,11 @@ export default function LoadGame() {
     [joinedGameHistory, resetBoard, setGamePgn, setEval, setBoardOrientation]
   );
 
-  const { lichessGameId, orientation: orientationParam } = router.query;
+  const {
+    lichessGameId,
+    orientation: orientationParam,
+    pgn: pgnParam,
+  } = router.query;
 
   useEffect(() => {
     const handleLichess = async (id: string) => {
@@ -51,7 +56,18 @@ export default function LoadGame() {
       }
     };
 
-    if (gameFromUrl) {
+    const handlePgn = (encodedPgn: string) => {
+      try {
+        const pgn = decodeBase64Url(encodedPgn);
+        resetAndSetGamePgn(pgn, orientationParam !== "black");
+      } catch (error) {
+        console.error("Error loading PGN from URL:", error);
+      }
+    };
+
+    if (typeof pgnParam === "string" && pgnParam.length > 0) {
+      handlePgn(pgnParam);
+    } else if (gameFromUrl) {
       const orientation = !(
         gameFromUrl.site === "Chesskit.org" && gameFromUrl.black.name === "You"
       );
@@ -59,7 +75,13 @@ export default function LoadGame() {
     } else if (typeof lichessGameId === "string" && !!lichessGameId) {
       handleLichess(lichessGameId);
     }
-  }, [gameFromUrl, lichessGameId, orientationParam, resetAndSetGamePgn]);
+  }, [
+    gameFromUrl,
+    lichessGameId,
+    orientationParam,
+    pgnParam,
+    resetAndSetGamePgn,
+  ]);
 
   useEffect(() => {
     const eventHandler = (event: MessageEvent) => {
